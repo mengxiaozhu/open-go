@@ -26,7 +26,7 @@ func (s *SDK) GetMediaInfoFromPlatform(openID string, platform string) (resp *Me
 		JSON(req).
 		Send().
 		JSON(resp)
-	log.Println(err, resp)
+	log.Println(platform, req, err, resp)
 	return
 
 }

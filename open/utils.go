@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"log"
 )
 
 type SDK struct {
@@ -61,5 +62,6 @@ func (s *SDK) CheckSign(body interface{}) (bool, error) {
 func (s *SDK) Sign(body interface{}) {
 	v := reflect.ValueOf(body).Elem()
 	signValue := s.calcSign(body)
+	log.Println(signValue)
 	v.FieldByName(SignField).SetString(signValue)
 }

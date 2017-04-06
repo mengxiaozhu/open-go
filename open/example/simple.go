@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	ApiKey    = ""
-	ApiSecret = ""
+	ApiKey    = "shared"
+	ApiSecret = "shared"
 )
 
 var SDK *open.SDK = &open.SDK{ApiKey: ApiKey, ApiSecret: ApiSecret}
@@ -45,7 +45,7 @@ func openCtrl(ctx *macaron.Context, body []byte) {
 }
 
 func triggerCtrl(ctx *macaron.Context, body []byte) {
-
+	ctx.Redirect("https://www.mengxiaozhu.cn")
 }
 func main() {
 	m := macaron.Classic()
