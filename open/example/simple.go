@@ -50,7 +50,7 @@ func triggerCtrl(ctx *macaron.Context, body []byte) {
 func main() {
 	m := macaron.Classic()
 	m.Use(macaron.Renderer())
-	m.Get("/index", func(ctx *macaron.Context) {
+	m.Any("/index", func(ctx *macaron.Context) {
 		bodyBytes, err := ctx.Req.Body().Bytes()
 		if err != nil {
 			ctx.JSON(200, &open.BaseResp{ErrCode: -1, ErrMsg: err.Error()})
