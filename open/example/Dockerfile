@@ -1,8 +1,8 @@
 FROM golang:latest
 
-COPY ./ $GOPATH/src/github.com/mengxiaozhu/open-go/open/example
+COPY ./ $GOPATH/src/example
 
-WORKDIR $GOPATH/src/github.com/mengxiaozhu/open-go/open/example
+WORKDIR $GOPATH/src/example
 
 # TimeZone
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
