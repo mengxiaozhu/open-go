@@ -45,7 +45,11 @@ func openCtrl(ctx *macaron.Context, body []byte) {
 }
 
 func triggerCtrl(ctx *macaron.Context, body []byte) {
-	ctx.Redirect("https://www.mengxiaozhu.cn")
+	target := ctx.Query("target")
+	if target == "" {
+		target = "https://www.mengxiaozhu.cn"
+	}
+	ctx.Redirect(target)
 }
 func main() {
 	m := macaron.Classic()
