@@ -6,6 +6,7 @@ import (
 	"github.com/qiniu/log"
 	"gopkg.in/macaron.v1"
 	"time"
+	"net/url"
 )
 
 const (
@@ -44,6 +45,30 @@ func openCtrl(ctx *macaron.Context, body []byte) {
 
 }
 
+func configCtrl(ctx *macaron.Context, body []byte) {
+	params := ctx.Req.URL.Query()
+	target := ctx.Query("target")
+	params.Del("target")
+
+	if target == "" {
+		target = "https://www.mengxiaozhu.cn"
+	}
+
+	URL, err := url.Parse(target)
+	if err != nil {
+		ctx.Redirect(target)
+	}
+	targetParams := URL.Query()
+	for k, vs := range map[string][]string(params) {
+		for _, v := range vs {
+			targetParams.Add(k, v)
+		}
+	}
+	URL.RawQuery = targetParams.Encode()
+	log.Println(URL.String())
+	ctx.Redirect(URL.String())
+}
+
 func triggerCtrl(ctx *macaron.Context, body []byte) {
 	target := ctx.Query("target")
 	if target == "" {
@@ -72,6 +97,8 @@ func main() {
 			fallthrough
 		case "keyword":
 			ctx.JSON(200, &open.BaseResp{ErrCode: 0, ErrMsg: "ok"})
+		case "config":
+			configCtrl(ctx, bodyBytes)
 		}
 		return
 	})
