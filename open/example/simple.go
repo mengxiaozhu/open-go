@@ -50,6 +50,9 @@ func configCtrl(ctx *macaron.Context, body []byte) {
 	target := ctx.Query("target")
 	params.Del("target")
 
+	channel := ctx.Query("channel")
+	params.Del("channel")
+
 	if target == "" {
 		target = "https://www.mengxiaozhu.cn"
 	}
@@ -63,6 +66,10 @@ func configCtrl(ctx *macaron.Context, body []byte) {
 		for _, v := range vs {
 			targetParams.Add(k, v)
 		}
+	}
+
+	if channel != "" {
+		targetParams.Add(channel, params.Get("media_id"))
 	}
 	URL.RawQuery = targetParams.Encode()
 	log.Println(URL.String())
