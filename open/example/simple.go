@@ -7,6 +7,7 @@ import (
 	"gopkg.in/macaron.v1"
 	"time"
 	"net/url"
+	"strings"
 )
 
 const (
@@ -81,6 +82,8 @@ func triggerCtrl(ctx *macaron.Context, body []byte) {
 	if target == "" {
 		target = "https://www.mengxiaozhu.cn"
 	}
+
+	target = strings.Replace(target, "{media_id}", ctx.Query("media_id"), -1)
 	ctx.Redirect(target)
 }
 func main() {
