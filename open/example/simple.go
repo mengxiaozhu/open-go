@@ -48,31 +48,28 @@ func openCtrl(ctx *macaron.Context, body []byte) {
 
 func configCtrl(ctx *macaron.Context, body []byte) {
 	params := ctx.Req.URL.Query()
-	target := ctx.Query("target")
-	params.Del("target")
-
+	conf := ctx.Query("conf")
+	params.Del("conf")
 	channel := ctx.Query("channel")
 	params.Del("channel")
-
-	if target == "" {
-		target = "https://www.mengxiaozhu.cn"
+	if conf == "" {
+		conf = "https://www.mengxiaozhu.cn"
 	}
-
-	URL, err := url.Parse(target)
+	URL, err := url.Parse(conf)
 	if err != nil {
-		ctx.Redirect(target)
+		ctx.Redirect(conf)
 	}
-	targetParams := URL.Query()
+	confPageQuery := URL.Query()
 	for k, vs := range map[string][]string(params) {
 		for _, v := range vs {
-			targetParams.Add(k, v)
+			confPageQuery.Add(k, v)
 		}
 	}
 
 	if channel != "" {
-		targetParams.Add(channel, params.Get("media_id"))
+		confPageQuery.Add(channel, params.Get("media_id"))
 	}
-	URL.RawQuery = targetParams.Encode()
+	URL.RawQuery = confPageQuery.Encode()
 	log.Println(URL.String())
 	ctx.Redirect(URL.String())
 }
