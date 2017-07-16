@@ -3,12 +3,12 @@ package open
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"log"
 	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
-	"log"
 )
 
 type SDK struct {
@@ -64,4 +64,31 @@ func (s *SDK) Sign(body interface{}) {
 	signValue := s.calcSign(body)
 	log.Println(signValue)
 	v.FieldByName(SignField).SetString(signValue)
+}
+
+type entrypoint struct {
+	origin string
+	u      *url.URL
+}
+
+func NewEntryPoint(raw string) (*entrypoint, error) {
+	u, err := url.Parse(raw)
+	if err != nil {
+		return nil, err
+	}
+	return &entrypoint{
+		origin: raw,
+		u:      u,
+	}, nil
+}
+
+func (ep *entrypoint) AddQuery(k string, v string) (*entrypoint) {
+	query := ep.u.Query()
+	query.Add(k, v)
+	ep.u.RawQuery = query.Encode()
+	return ep
+}
+
+func (ep *entrypoint) Build() (string) {
+	return ep.u.String()
 }
