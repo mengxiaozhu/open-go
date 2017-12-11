@@ -75,6 +75,12 @@ func configCtrl(ctx *macaron.Context, body []byte) {
 }
 
 func triggerCtrl(ctx *macaron.Context, body []byte) {
+	sleep := ctx.QueryInt("sleep")
+	if sleep != 0 {
+		time.Sleep(time.Duration(sleep) * time.Millisecond)
+		ctx.PlainText(200, []byte("ok"))
+		return
+	}
 	target := ctx.Query("target")
 	if target == "" {
 		target = "https://www.mengxiaozhu.cn"
